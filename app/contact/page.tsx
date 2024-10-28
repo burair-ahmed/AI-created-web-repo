@@ -7,10 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
 
 export default function Contact() {
-  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,13 +16,13 @@ export default function Contact() {
     message: "",
   });
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message Sent",
-      description: "We'll get back to you as soon as possible.",
-    });
+    setIsSubmitted(true);
     setFormData({ name: "", email: "", company: "", message: "" });
+    setTimeout(() => setIsSubmitted(false), 5000); // Hide message after 5 seconds
   };
 
   const handleChange = (
@@ -42,6 +40,11 @@ export default function Contact() {
           <p className="mt-6 text-lg leading-8 text-muted-foreground">
             Get in touch with our team of experts to discuss how we can help transform your business.
           </p>
+          {isSubmitted && (
+            <div className="mt-4 p-4 bg-green-100 text-green-700 rounded">
+              Message Sent. We'll get back to you as soon as possible.
+            </div>
+          )}
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           <div className="lg:col-span-2">
